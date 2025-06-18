@@ -1,0 +1,1143 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>东方女性气质自测量表 - 真善美</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: white;
+            border-radius: 20px;
+            padding: 40px 30px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            background: linear-gradient(135deg, #fff5f5 0%, #fff 100%);
+        }
+
+        .header h1 {
+            color: #d4546c;
+            font-size: 28px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .header .subtitle {
+            color: #8b5a6b;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+
+        .header .description {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.8;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .progress-container {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+
+        .progress-bar {
+            background: #f0f0f0;
+            border-radius: 10px;
+            height: 8px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, #d4546c, #f4a6c8);
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+
+        .progress-text {
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+
+        .question-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            display: none;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .question-card.active {
+            display: block;
+        }
+
+        .question-card.section-header {
+            background: linear-gradient(135deg, #f8f4f8 0%, #e8dce8 100%);
+            text-align: center;
+            border: 2px solid #d4546c;
+        }
+
+        .section-title {
+            color: #d4546c;
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .section-desc {
+            color: #8b5a6b;
+            font-size: 16px;
+        }
+
+        .question-number {
+            color: #d4546c;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .question-title {
+            color: #333;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .question-desc {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        .options {
+            space-y: 10px;
+        }
+
+        .option {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            padding: 15px 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .option:hover {
+            border-color: #d4546c;
+            background: #fdf2f5;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(212, 84, 108, 0.2);
+        }
+
+        .option.selected {
+            border-color: #d4546c;
+            background: linear-gradient(135deg, #fdf2f5 0%, #f8e8ec 100%);
+            box-shadow: 0 5px 15px rgba(212, 84, 108, 0.3);
+        }
+
+        .option-label {
+            font-weight: 600;
+            color: #d4546c;
+            margin-right: 10px;
+            min-width: 20px;
+        }
+
+        .option-text {
+            color: #333;
+            flex: 1;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 30px;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #d4546c 0%, #f4a6c8 100%);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            padding: 12px 30px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(212, 84, 108, 0.4);
+        }
+
+        .btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+            box-shadow: 0 8px 20px rgba(108, 117, 125, 0.4);
+        }
+
+        .result-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            display: none;
+        }
+
+        .result-card.show {
+            display: block;
+            animation: slideIn 0.8s ease-out;
+        }
+
+        .result-icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+        }
+
+        .result-title {
+            color: #d4546c;
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .result-score {
+            color: #8b5a6b;
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+
+        .result-description {
+            color: #666;
+            font-size: 16px;
+            line-height: 1.8;
+            margin-bottom: 30px;
+            text-align: left;
+        }
+
+        .result-suggestions {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            text-align: left;
+        }
+
+        .suggestions-title {
+            color: #d4546c;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .suggestions-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .suggestions-list li {
+            color: #666;
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .suggestions-list li:before {
+            content: "✨";
+            position: absolute;
+            left: 0;
+        }
+
+        .cta-section {
+            background: linear-gradient(135deg, #d4546c 0%, #f4a6c8 100%);
+            border-radius: 15px;
+            padding: 25px;
+            color: white;
+            margin-top: 30px;
+        }
+
+        .cta-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .cta-text {
+            font-size: 14px;
+            margin-bottom: 20px;
+            opacity: 0.9;
+        }
+
+        .cta-button {
+            background: white;
+            color: #d4546c;
+            border: none;
+            border-radius: 25px;
+            padding: 12px 30px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255,255,255,0.3);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .header {
+                padding: 30px 20px;
+            }
+            
+            .header h1 {
+                font-size: 24px;
+            }
+            
+            .question-card {
+                padding: 20px;
+            }
+            
+            .question-title {
+                font-size: 16px;
+            }
+            
+            .option {
+                padding: 12px 15px;
+            }
+        }
+
+        .restart-btn {
+            background: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 8px 20px;
+            font-size: 14px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 标题头部 -->
+        <div class="header">
+            <h1>🌸 东方女性气质自测量表</h1>
+            <div class="subtitle">专业测评 · 精准诊断 · 个性化指导</div>
+            <div class="description">
+                这份量表由<strong>真善美创始人兰子老师</strong>基于多年女性美学研究和数十万学员实践经验精心设计。<br>
+                每个女性都有属于自己的独特美丽，我们不追求标准化，而是帮你发现并绽放属于你的东方女性魅力。
+            </div>
+        </div>
+
+        <!-- 进度条 -->
+        <div class="progress-container" id="progressContainer" style="display: none;">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="progress-text" id="progressText">第 1 题，共 15 题</div>
+        </div>
+
+        <!-- 开始页面 -->
+        <div class="question-card active" id="startCard">
+            <div style="text-align: center;">
+                <h2 style="color: #d4546c; margin-bottom: 20px;">🌺 准备开始测评</h2>
+                <p style="color: #666; margin-bottom: 30px; line-height: 1.8;">
+                    <strong>测评时间</strong>：约5-8分钟<br>
+                    <strong>测评方式</strong>：请根据真实情况选择最符合的选项<br>
+                    <strong>建议环境</strong>：找一面全身镜，诚实面对自己
+                </p>
+                <button class="btn" onclick="startTest()">开始测评 ✨</button>
+            </div>
+        </div>
+
+        <!-- 第一部分标题 -->
+        <div class="question-card section-header" id="section1">
+            <div class="section-title">📊 第一部分：体态健康评估</div>
+            <div class="section-desc">评估你的身体姿态和健康活力状态</div>
+            <button class="btn" onclick="nextQuestion()" style="margin-top: 20px;">开始评估</button>
+        </div>
+
+        <!-- 问题1-15 -->
+        <div class="question-card" id="question1">
+            <div class="question-number">第 1 题 / 15 题</div>
+            <div class="question-title">站立姿态观察</div>
+            <div class="question-desc">请站在镜子前，自然站立，观察你的整体姿态</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(1, 'A', 4)">
+                    <span class="option-label">A.</span>
+                    <span class="option-text">头部微微上扬，肩膀自然下沉，脊柱挺拔，重心均匀</span>
+                </div>
+                <div class="option" onclick="selectOption(1, 'B', 3)">
+                    <span class="option-label">B.</span>
+                    <span class="option-text">基本挺拔，但肩膀略有紧张或头部略向前</span>
+                </div>
+                <div class="option" onclick="selectOption(1, 'C', 2)">
+                    <span class="option-label">C.</span>
+                    <span class="option-text">有轻微驼背或含胸，但整体还算端正</span>
+                </div>
+                <div class="option" onclick="selectOption(1, 'D', 1)">
+                    <span class="option-label">D.</span>
+                    <span class="option-text">明显含胸驼背，头部前倾，肩膀耸起</span>
+                </div>
+            </div>
+            <div class="navigation">
+                <button class="btn btn-secondary" onclick="prevQuestion()">上一题</button>
+                <button class="btn" onclick="nextQuestion()" id="nextBtn1" disabled>下一题</button>
+            </div>
+        </div>
+
+        <div class="question-card" id="question2">
+            <div class="question-number">第 2 题 / 15 题</div>
+            <div class="question-title">走路状态评估</div>
+            <div class="question-desc">请观察自己平时走路的状态</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(2, 'A', 4)">
+                    <span class="option-label">A.</span>
+                    <span class="option-text">步伐轻盈有力，身体挺拔，手臂自然摆动</span>
+                </div>
+                <div class="option" onclick="selectOption(2, 'B', 3)">
+                    <span class="option-label">B.</span>
+                    <span class="option-text">基本端正，但偶尔会懒散或急促</span>
+                </div>
+                <div class="option" onclick="selectOption(2, 'C', 2)">
+                    <span class="option-label">C.</span>
+                    <span class="option-text">经常低头看手机，步伐略显拖沓</span>
+                </div>
+                <div class="option" onclick="selectOption(2, 'D', 1)">
+                    <span class="option-label">D.</span>
+                    <span class="option-text">走路含胸驼背，步伐沉重或过于急促</span>
+                </div>
+            </div>
+            <div class="navigation">
+                <button class="btn btn-secondary" onclick="prevQuestion()">上一题</button>
+                <button class="btn" onclick="nextQuestion()" id="nextBtn2" disabled>下一题</button>
+            </div>
+        </div>
+
+        <div class="question-card" id="question3">
+            <div class="question-number">第 3 题 / 15 题</div>
+            <div class="question-title">坐姿习惯观察</div>
+            <div class="question-desc">回想你日常工作学习时的坐姿</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(3, 'A', 4)">
+                    <span class="option-label">A.</span>
+                    <span class="option-text">腰背挺直，双脚平放，保持优雅坐姿</span>
+                </div>
+                <div class="option" onclick="selectOption(3, 'B', 3)">
+                    <span class="option-label">B.</span>
+                    <span class="option-text">刚开始端正，时间长了会慢慢放松</span>
+                </div>
+                <div class="option" onclick="selectOption(3, 'C', 2)">
+                    <span class="option-label">C.</span>
+                    <span class="option-text">经常靠在椅背上，或翘二郎腿</span>
+                </div>
+                <div class="option" onclick="selectOption(3, 'D', 1)">
+                    <span class="option-label">D.</span>
+                    <span class="option-text">习惯性弯腰驼背，或各种随意姿势</span>
+                </div>
+            </div>
+            <div class="navigation">
+                <button class="btn btn-secondary" onclick="prevQuestion()">上一题</button>
+                <button class="btn" onclick="nextQuestion()" id="nextBtn3" disabled>下一题</button>
+            </div>
+        </div>
+
+        <div class="question-card" id="question4">
+            <div class="question-number">第 4 题 / 15 题</div>
+            <div class="question-title">肩颈状态检测</div>
+            <div class="question-desc">感受你的肩颈部位</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(4, 'A', 4)">
+                    <span class="option-label">A.</span>
+                    <span class="option-text">肩颈放松，很少有酸痛感</span>
+                </div>
+                <div class="option" onclick="selectOption(4, 'B', 3)">
+                    <span class="option-label">B.</span>
+                    <span class="option-text">偶尔会有轻微酸痛，但不严重</span>
+                </div>
+                <div class="option" onclick="selectOption(4, 'C', 2)">
+                    <span class="option-label">C.</span>
+                    <span class="option-text">经常感到肩颈酸痛，需要按摩缓解</span>
+                </div>
+                <div class="option" onclick="selectOption(4, 'D', 1)">
+                    <span class="option-label">D.</span>
+                    <span class="option-text">长期肩颈僵硬疼痛，影响日常生活</span>
+                </div>
+            </div>
+            <div class="navigation">
+                <button class="btn btn-secondary" onclick="prevQuestion()">上一题</button>
+                <button class="btn" onclick="nextQuestion()" id="nextBtn4" disabled>下一题</button>
+            </div>
+        </div>
+
+        <div class="question-card" id="question5">
+            <div class="question-number">第 5 题 / 15 题</div>
+            <div class="question-title">整体活力感受</div>
+            <div class="question-desc">评估你的身体活力状态</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(5, 'A', 4)">
+                    <span class="option-label">A.</span>
+                    <span class="option-text">精力充沛，身体轻盈，充满生命力</span>
+                </div>
+                <div class="option" onclick="selectOption(5, 'B', 3)">
+                    <span class="option-label">B.</span>
+                    <span class="option-text">大部分时候精神很好，偶尔会疲惫</span>
+                </div>
+                <div class="option" onclick="selectOption(5, 'C', 2)">
+                    <span class="option-label">C.</span>
+                    <span class="option-text">容易疲劳，身体经常感觉沉重</span>
+                </div>
+                <div class="option" onclick="selectOption(5, 'D', 1)">
+                    <span class="option-label">D.</span>
+                    <span class="option-text">长期疲惫，身体缺乏活力</span>
+                </div>
+            </div>
+            <div class="navigation">
+                <button class="btn btn-secondary" onclick="prevQuestion()">上一题</button>
+                <button class="btn" onclick="nextQuestion()" id="nextBtn5" disabled>下一题</button>
+            </div>
+        </div>
+
+        <!-- 第二部分标题 -->
+        <div class="question-card section-header" id="section2">
+            <div class="section-title">💫 第二部分：气质魅力评估</div>
+            <div class="section-desc">评估你的内在自信和外在表现力</div>
+            <button class="btn" onclick="nextQuestion()" style="margin-top: 20px;">继续评估</button>
+        </div>
+
+        <div class="question-card" id="question6">
+            <div class="question-number">第 6 题 / 15 题</div>
+            <div class="question-title">内在自信程度</div>
+            <div class="question-desc">评估你的自信状态</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(6, 'A', 4)">
+                    <span class="option-label">A.</span>
+                    <span class="option-text">非常自信，能够自然地表达自己</span>
+                </div>
+                <div class="option" onclick="selectOption(6, 'B', 3)">
+                    <span class="option-label">B.</span>
+                    <span class="option-text">大部分时候自信，偶尔会紧张</span>
+                </div>
+                <div class="option" onclick="selectOption(6, 'C', 2)">
+                    <span class="option-label">C.</span>
+                    <span class="option-text">自信心一般，容易受他人影响</span>
+                </div>
+                <div class="option" onclick="selectOption(6, 'D', 1)">
+                    <span class="option-label">D.</span>
+                    <span class="option-text">缺乏自信，经常自我怀疑</span>
+                </div>
+            </div>
+            <div class="navigation">
+                <button class="btn btn-secondary" onclick="prevQuestion()">上一题</button>
+                <button class="btn" onclick="nextQuestion()" id="nextBtn6" disabled>下一题</button>
+            </div>
+        </div>
+
+        <div class="question-card" id="question7">
+            <div class="question-number">第 7 题 / 15 题</div>
+            <div class="question-title">社交表现力</div>
+            <div class="question-desc">在社交场合中的表现</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(7, 'A', 4)">
+                    <span class="option-label">A.</span>
+                    <span class="option-text">自然大方，能够优雅地与人交流</span>
+                </div>
+                <div class="option" onclick="selectOption(7, 'B', 3)">
+                    <span class="option-label">B.</span>
+                    <span class="option-text">基本得体，但有时会紧张</span>
+                </div>
+                <div class="option" onclick="selectOption(7, 'C', 2)">
+                    <span class="option-label">C.</span>
+                    <span class="option-text">比较内向，不太善于表达</span>
+                </div>
+                <div class="option" onclick="selectOption(7, 'D', 1)">
+                    <span class="option-label">D.</span>
+                    <span class="option-text">社交焦虑，避免成为焦点</span>
+                </div>
+            </div>
+            <div class="navigation">
+                <button class="btn btn-secondary" onclick="prevQuestion()">上一题</button>
+                <button class="btn" onclick="nextQuestion()" id="nextBtn7" disabled>下一题</button>
+            </div>
+        </div>
+
+        <div class="question-card" id="question8">
+            <div class="question-number">第 8 题 / 15 题</div>
+            <div class="question-title">优雅举止习惯</div>
+            <div class="question-desc">日常生活中的行为举止</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(8, 'A', 4)">
+                    <span class="option-label">A.</span>
+                    <span class="option-text">举手投足都很优雅，注重细节</span>
+                </div>
+                <div class="option" onclick="selectOption(8, 'B', 3)">
+                    <span class="option-label">B.</span>
+                    <span class="option-text">大部分时候得体，偶尔会随意</span>
+                </div>
+                <div class="option" onclick="selectOption(8, 'C', 2)">
+                    <span class="option-label">C.</span>
+                    <span class="option-text">平时比较随意，正式场合才注意</span>
+                </div>
+                <div class="option" onclick="selectOption(8, 'D', 1)">
+                    <span class="option-label">D.</span>
+                    <span class="option-text">很少注意举止优雅，比较随性</span>
+                </div>
+            </div>
+            <div class="navigation">
+                <button class="btn btn-secondary" onclick="prevQuestion()">上一题</button>
+                <button class="btn" onclick="nextQuestion()" id="nextBtn8" disabled>下一题</button>
+            </div>
+        </div>
+
+        <div class="question-card" id="question9">
+            <div class="question-number">第 9 题 / 15 题</div>
+            <div class="question-title">情绪管理能力</div>
+            <div class="question-desc">面对压力和情绪的处理方式</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(9, 'A', 4)">
+                    <span class="option-label">A.</span>
+                    <span class="option-text">情绪稳定，能够优雅地处理各种情况</span>
+                </div>
+                <div class="option" onclick="selectOption(9, 'B', 3)">
+                    <span class="option-label">B.</span>
+                    <span class="option-text">大部分时候情绪管理良好</span>
+                </div>
+                <div class="option" onclick="selectOption(9, 'C', 2)">
+                    <span class="option-label">C.</span>
+                    <span class="option-text">情绪起伏较大，但能够自我调节</span>
+                </div>
+                <div class="option" onclick="selectOption(9, 'D', 1)">
+                    <span class="option-label">D.</span>
+                    <span class="option-text">情绪控制较差，容易受外界影响</span>
+                </div>
+            </div>
+            <div class="navigation">
+                <button class="btn btn-secondary" onclick="prevQuestion()">上一题</button>
+                <button class="btn" onclick="nextQuestion()" id="nextBtn9" disabled>下一题</button>
+            </div>
+        </div>
+
+        <div class="question-card" id="question10">
+            <div class="question-number">第 10 题 / 15 题</div>
+            <div class="question-title">个人风格定位</div>
+            <div class="question-desc">你对自己风格的认知</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(10, 'A', 4)">
+                    <span class="option-label">A.</span>
+                    <span class="option-text">清楚自己的风格，并能很好地展现</span>
+                </div>
+                <div class="option" onclick="selectOption(10, 'B', 3)">
+                    <span class="option-label">B.</span>
+                    <span class="option-text">基本了解自己，正在探索更好的表达</span>
+                </div>
+                <div class="option" onclick="selectOption(10, 'C', 2)">
+                    <span class="option-label">C.</span>
+                    <span class="option-text">对自己的风格不太确定，在寻找中</span>
+                </div>
+                <div class="option" onclick="selectOption(10, 'D', 1)">
+                    <span class="option-label">D.</span>
+                    <span class="option-text">完全不知道什么风格适合自己</span>
+                </div>
+            </div>
+            <div class="navigation">
+                <button class="btn btn-secondary" onclick="prevQuestion()">上一题</button>
+                <button class="btn" onclick="nextQuestion()" id="nextBtn10" disabled>下一题</button>
+            </div>
+        </div>
+
+        <!-- 第三部分标题 -->
+        <div class="question-card section-header" id="section3">
+            <div class="section-title">🌈 第三部分：生活美学评估</div>
+            <div class="section-desc">评估你的审美品味和成长意愿</div>
+            <button class="btn" onclick="nextQuestion()" style="margin-top: 20px;">最后冲刺</button>
+        </div>
+
+        <div class="question-card" id="question11">
+            <div class="question-number">第 11 题 / 15 题</div>
+            <div class="question-title">穿搭品味</div>
+            <div class="question-desc">你的日常穿搭风格</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(11, 'A', 4)">
+                    <span class="option-label">A.</span>
+                    <span class="option-text">搭配得体，能够体现个人气质</span>
+                </div>
+                <div class="option" onclick="selectOption(11, 'B', 3)">
+                    <span class="option-label">B.</span>
+                    <span class="option-text">基本得体，但缺少亮点</span>
+                </div>
+                <div class="option" onclick="selectOption(11, 'C', 2)">
+                    <span class="option-label">C.</span>
+                    <span class="option-text">比较随意，只求舒适方便</span>
+                </div>
+                <div class="option" onclick="selectOption(11, 'D', 1)">
+                    <span class="option-label">D.</span>
+                    <span class="option-text">经常不知道怎么搭配，缺乏美感</span>
+                </div>
+            </div>
+            <div class="navigation">
+                <button class="btn btn-secondary" onclick="prevQuestion()">上一题</button>
+                <button class="btn" onclick="nextQuestion()" id="nextBtn11" disabled>下一题</button>
+            </div>
+        </div>
+
+        <div class="question-card" id="question12">
+            <div class="question-number">第 12 题 / 15 题</div>
+            <div class="question-title">生活品质追求</div>
+            <div class="question-desc">对生活美学的重视程度</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(12, 'A', 4)">
+                    <span class="option-label">A.</span>
+                    <span class="option-text">很注重生活品质，追求精致美好</span>
+                </div>
+                <div class="option" onclick="selectOption(12, 'B', 3)">
+                    <span class="option-label">B.</span>
+                    <span class="option-text">在能力范围内追求更好的生活</span>
+                </div>
+                <div class="option" onclick="selectOption(12, 'C', 2)">
+                    <span class="option-label">C.</span>
+                    <span class="option-text">对生活品质有要求，但执行不够</span>
+                </div>
+                <div class="option" onclick="selectOption(12, 'D', 1)">
+                    <span class="option-label">D.</span>
+                    <span class="option-text">很少关注生活美学，凑合过就行</span>
+                </div>
+            </div>
+            <div class="navigation">
+                <button class="btn btn-secondary" onclick="prevQuestion()">上一题</button>
+                <button class="btn" onclick="nextQuestion()" id="nextBtn12" disabled>下一题</button>
+            </div>
+        </div>
+
+        <div class="question-card" id="question13">
+            <div class="question-number">第 13 题 / 15 题</div>
+            <div class="question-title">学习成长意愿</div>
+            <div class="question-desc">对自我提升的态度</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(13, 'A', 4)">
+                    <span class="option-label">A.</span>
+                    <span class="option-text">积极学习，持续追求成长和进步</span>
+                </div>
+                <div class="option" onclick="selectOption(13, 'B', 3)">
+                    <span class="option-label">B.</span>
+                    <span class="option-text">有学习意愿，但执行力一般</span>
+                </div>
+                <div class="option" onclick="selectOption(13, 'C', 2)">
+                    <span class="option-label">C.</span>
+                    <span class="option-text">偶尔想要改变，但缺乏持续性</span>
+                </div>
+                <div class="option" onclick="selectOption(13, 'D', 1)">
+                    <span class="option-label">D.</span>
+                    <span class="option-text">很少主动学习，习惯现状</span>
+                </div>
+            </div>
+            <div class="navigation">
+                <button class="btn btn-secondary" onclick="prevQuestion()">上一题</button>
+                <button class="btn" onclick="nextQuestion()" id="nextBtn13" disabled>下一题</button>
+            </div>
+        </div>
+
+        <div class="question-card" id="question14">
+            <div class="question-number">第 14 题 / 15 题</div>
+            <div class="question-title">审美敏感度</div>
+            <div class="question-desc">对美的感知和判断力</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(14, 'A', 4)">
+                    <span class="option-label">A.</span>
+                    <span class="option-text">审美敏锐，能够识别和欣赏美好事物</span>
+                </div>
+                <div class="option" onclick="selectOption(14, 'B', 3)">
+                    <span class="option-label">B.</span>
+                    <span class="option-text">有一定审美能力，正在提升中</span>
+                </div>
+                <div class="option" onclick="selectOption(14, 'C', 2)">
+                    <span class="option-label">C.</span>
+                    <span class="option-text">审美比较普通，跟随大众喜好</span>
+                </div>
+                <div class="option" onclick="selectOption(14, 'D', 1)">
+                    <span class="option-label">D.</span>
+                    <span class="option-text">对美感不太敏感，很少有感觉</span>
+                </div>
+            </div>
+            <div class="navigation">
+                <button class="btn btn-secondary" onclick="prevQuestion()">上一题</button>
+                <button class="btn" onclick="nextQuestion()" id="nextBtn14" disabled>下一题</button>
+            </div>
+        </div>
+
+        <div class="question-card" id="question15">
+            <div class="question-number">第 15 题 / 15 题</div>
+            <div class="question-title">整体满意度</div>
+            <div class="question-desc">对当前状态的满意程度</div>
+            <div class="options">
+                <div class="option" onclick="selectOption(15, 'A', 4)">
+                    <span class="option-label">A.</span>
+                    <span class="option-text">非常满意现在的自己，充满自信</span>
+                </div>
+                <div class="option" onclick="selectOption(15, 'B', 3)">
+                    <span class="option-label">B.</span>
+                    <span class="option-text">基本满意，但希望能够更好</span>
+                </div>
+                <div class="option" onclick="selectOption(15, 'C', 2)">
+                    <span class="option-label">C.</span>
+                    <span class="option-text">不太满意，想要改变但不知道怎么开始</span>
+                </div>
+                <div class="option" onclick="selectOption(15, 'D', 1)">
+                    <span class="option-label">D.</span>
+                    <span class="option-text">很不满意，急需改变和提升</span>
+                </div>
+            </div>
+            <div class="navigation">
+                <button class="btn btn-secondary" onclick="prevQuestion()">上一题</button>
+                <button class="btn" onclick="calculateResult()" id="nextBtn15" disabled>查看结果 ✨</button>
+            </div>
+        </div>
+
+        <!-- 结果页面 -->
+        <div class="result-card" id="resultCard">
+            <div class="result-icon" id="resultIcon">🌟</div>
+            <div class="result-title" id="resultTitle">气质美人型</div>
+            <div class="result-score" id="resultScore">你的得分：45分</div>
+            <div class="result-description" id="resultDescription">
+                <!-- 结果描述将由JavaScript动态生成 -->
+            </div>
+            <div class="result-suggestions" id="resultSuggestions">
+                <!-- 建议将由JavaScript动态生成 -->
+            </div>
+            
+            <div class="cta-section">
+                <div class="cta-title">🎁 专属福利等你领取</div>
+                <div class="cta-text">
+                    基于你的测评结果，我们为你准备了个性化的美丽提升方案<br>
+                    添加微信即可获取专属指导和课程优惠
+                </div>
+                <button class="cta-button" onclick="showContact()">立即获取专属方案</button>
+            </div>
+            
+            <button class="restart-btn" onclick="restartTest()">重新测评</button>
+        </div>
+    </div>
+
+    <script>
+        let currentQuestion = 0;
+        let answers = {};
+        let totalScore = 0;
+        let sectionStarts = [0, 1, 6, 11]; // 开始页、第一部分、第二部分、第三部分的起始位置
+
+        const resultTypes = {
+            goddess: {
+                min: 52, max: 60,
+                icon: "👑",
+                title: "优雅女神型",
+                description: `<strong>恭喜你！你已经是真正的东方优雅女神</strong><br><br>
+                <strong>你的特质：</strong><br>
+                • 体态挺拔，气质出众<br>
+                • 内在自信，外在优雅<br>
+                • 生活品质高，审美能力强<br>
+                • 是其他女性学习的榜样`,
+                suggestions: [
+                    "继续保持优雅状态",
+                    "可以考虑影响和帮助更多女性",
+                    "在细节上追求完美",
+                    "成为气质导师或形象顾问"
+                ],
+                course: "真善美高级研修班"
+            },
+            beauty: {
+                min: 42, max: 51,
+                icon: "💎",
+                title: "气质美人型",
+                description: `<strong>你已经具备了很好的基础，是潜力巨大的气质美人</strong><br><br>
+                <strong>你的特质：</strong><br>
+                • 基础良好，有一定气质基础<br>
+                • 在某些方面表现出色<br>
+                • 有提升意识和学习能力<br>
+                • 距离完美只差临门一脚`,
+                suggestions: [
+                    "系统性提升薄弱环节",
+                    "加强体态训练和气质修炼",
+                    "培养更精致的生活美学",
+                    "建立更稳定的优雅习惯"
+                ],
+                course: "真善美进阶课程"
+            },
+            charm: {
+                min: 32, max: 41,
+                icon: "🌸",
+                title: "魅力发展型",
+                description: `<strong>你有很好的潜质，正在美丽绽放的路上</strong><br><br>
+                <strong>你的特质：</strong><br>
+                • 有美丽意识，渴望提升<br>
+                • 在某些方面已经不错<br>
+                • 需要更系统的指导和训练<br>
+                • 提升空间很大，前景可期`,
+                suggestions: [
+                    "从基础体态训练开始",
+                    "培养优雅的生活习惯",
+                    "提升内在自信和外在表现",
+                    "学习系统的美学知识"
+                ],
+                course: "真善美基础课程（399元）⭐"
+            },
+            blossom: {
+                min: 15, max: 31,
+                icon: "🌱",
+                title: "美丽蜕变型",
+                description: `<strong>没关系，每个女性都有绽放的可能，你的美丽之旅即将开始</strong><br><br>
+                <strong>你的特质：</strong><br>
+                • 正处在觉醒的关键时期<br>
+                • 有改变的愿望，需要正确指导<br>
+                • 一旦开始蜕变，进步会很明显<br>
+                • 潜力巨大，未来可期`,
+                suggestions: [
+                    "从改变心态开始，建立美丽自信",
+                    "学习基础的体态纠正方法",
+                    "培养爱自己的意识和行为",
+                    "寻找专业指导和同伴支持"
+                ],
+                course: "真善美启蒙课程"
+            }
+        };
+
+        function startTest() {
+            document.getElementById('startCard').style.display = 'none';
+            document.getElementById('progressContainer').style.display = 'block';
+            document.getElementById('section1').style.display = 'block';
+            updateProgress();
+        }
+
+        function selectOption(questionNum, option, score) {
+            // 移除之前的选择
+            const questionCard = document.getElementById(`question${questionNum}`);
+            const options = questionCard.querySelectorAll('.option');
+            options.forEach(opt => opt.classList.remove('selected'));
+            
+            // 添加新选择
+            event.target.closest('.option').classList.add('selected');
+            
+            // 保存答案
+            answers[questionNum] = { option, score };
+            
+            // 启用下一题按钮
+            const nextBtn = document.getElementById(`nextBtn${questionNum}`);
+            if (nextBtn) {
+                nextBtn.disabled = false;
+            }
+        }
+
+        function nextQuestion() {
+            const currentCard = document.querySelector('.question-card.active, .question-card[style*="block"]');
+            if (currentCard) {
+                currentCard.style.display = 'none';
+                currentCard.classList.remove('active');
+            }
+
+            currentQuestion++;
+            
+            // 显示下一个问题或部分
+            let nextElement;
+            if (currentQuestion === 1) {
+                nextElement = document.getElementById('question1');
+            } else if (currentQuestion === 6) {
+                nextElement = document.getElementById('section2');
+            } else if (currentQuestion === 7) {
+                nextElement = document.getElementById('question6');
+            } else if (currentQuestion === 11) {
+                nextElement = document.getElementById('section3');
+            } else if (currentQuestion === 12) {
+                nextElement = document.getElementById('question11');
+            } else if (currentQuestion <= 15) {
+                nextElement = document.getElementById(`question${currentQuestion}`);
+            }
+            
+            if (nextElement) {
+                nextElement.style.display = 'block';
+                nextElement.classList.add('active');
+            }
+            
+            updateProgress();
+        }
+
+        function prevQuestion() {
+            const currentCard = document.querySelector('.question-card.active, .question-card[style*="block"]');
+            if (currentCard) {
+                currentCard.style.display = 'none';
+                currentCard.classList.remove('active');
+            }
+
+            currentQuestion--;
+            
+            let prevElement;
+            if (currentQuestion === 0) {
+                prevElement = document.getElementById('section1');
+            } else if (currentQuestion === 5) {
+                prevElement = document.getElementById('question5');
+            } else if (currentQuestion === 6) {
+                prevElement = document.getElementById('section2');
+            } else if (currentQuestion === 10) {
+                prevElement = document.getElementById('question10');
+            } else if (currentQuestion === 11) {
+                prevElement = document.getElementById('section3');
+            } else {
+                prevElement = document.getElementById(`question${currentQuestion}`);
+            }
+            
+            if (prevElement) {
+                prevElement.style.display = 'block';
+                prevElement.classList.add('active');
+            }
+            
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const totalQuestions = 15;
+            const progress = (Object.keys(answers).length / totalQuestions) * 100;
+            
+            document.getElementById('progressFill').style.width = progress + '%';
+            document.getElementById('progressText').textContent = 
+                `第 ${Object.keys(answers).length + 1} 题，共 ${totalQuestions} 题`;
+        }
+
+        function calculateResult() {
+            // 计算总分
+            totalScore = Object.values(answers).reduce((sum, answer) => sum + answer.score, 0);
+            
+            // 确定结果类型
+            let resultType;
+            for (const [key, type] of Object.entries(resultTypes)) {
+                if (totalScore >= type.min && totalScore <= type.max) {
+                    resultType = type;
+                    break;
+                }
+            }
+            
+            // 显示结果
+            showResult(resultType);
+        }
+
+        function showResult(resultType) {
+            // 隐藏所有问题卡片
+            document.querySelectorAll('.question-card').forEach(card => {
+                card.style.display = 'none';
+            });
+            document.getElementById('progressContainer').style.display = 'none';
+            
+            // 显示结果
+            document.getElementById('resultIcon').textContent = resultType.icon;
+            document.getElementById('resultTitle').textContent = resultType.title;
+            document.getElementById('resultScore').textContent = `你的得分：${totalScore}分`;
+            document.getElementById('resultDescription').innerHTML = resultType.description;
+            
+            // 生成建议列表
+            const suggestionsList = resultType.suggestions.map(suggestion => 
+                `<li>${suggestion}</li>`
+            ).join('');
+            
+            document.getElementById('resultSuggestions').innerHTML = `
+                <div class="suggestions-title">💡 专属建议</div>
+                <ul class="suggestions-list">
+                    ${suggestionsList}
+                </ul>
+                <p style="margin-top: 15px; color: #d4546c; font-weight: 600;">
+                    🎯 推荐课程：${resultType.course}
+                </p>
+            `;
+            
+            // 显示结果卡片
+            document.getElementById('resultCard').classList.add('show');
+        }
+
+        function showContact() {
+            alert('请添加微信号：ZhenShanMei888\n回复"测评结果"获取专属美丽方案！');
+        }
+
+        function restartTest() {
+            // 重置所有变量
+            currentQuestion = 0;
+            answers = {};
+            totalScore = 0;
+            
+            // 隐藏结果页面
+            document.getElementById('resultCard').classList.remove('show');
+            
+            // 显示开始页面
+            document.getElementById('startCard').style.display = 'block';
+            document.getElementById('startCard').classList.add('active');
+            
+            // 隐藏进度条
+            document.getElementById('progressContainer').style.display = 'none';
+            
+            // 重置所有选择
+            document.querySelectorAll('.option.selected').forEach(option => {
+                option.classList.remove('selected');
+            });
+            
+            // 禁用所有下一题按钮
+            document.querySelectorAll('[id^="nextBtn"]').forEach(btn => {
+                btn.disabled = true;
+            });
+        }
+    </script>
+</body>
+</html>
